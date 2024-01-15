@@ -32,7 +32,7 @@ func ArticleIdMiddleware() gin.HandlerFunc {
 
 		reader := db.Reader{Db: c.MustGet(models.Instance).(*models.App).GetDbRead()}
 
-		p := &params.PkwTecdocArticleSrc{}
+		p := params.NewPkwTecdocArticleSrc()
 		c.Set(InstanceProduct, reader.GetFirst(p.Append("articleId", id)))
 		// Set example variable
 		c.Next()

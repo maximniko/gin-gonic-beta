@@ -4,6 +4,12 @@ import (
 	"github.com/doug-martin/goqu/v9"
 )
 
+func NewPkwTecdocArticleSrc() *PkwTecdocArticleSrc {
+	return &PkwTecdocArticleSrc{
+		params: make(map[string]interface{}),
+	}
+}
+
 type PkwTecdocArticleSrc struct {
 	params map[string]interface{}
 }
