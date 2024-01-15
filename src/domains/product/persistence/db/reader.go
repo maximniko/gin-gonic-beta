@@ -1,7 +1,9 @@
 package db
 
 import (
-	"awesomeProject/src/domains/product/models"
+	repo "awesomeProject/src/domains/product/persistence/db/repositories"
+	"awesomeProject/src/domains/product/persistence/db/repositories/params"
+	"awesomeProject/src/domains/product/persistence/db/scheme"
 	"database/sql"
 )
 
@@ -9,7 +11,8 @@ type Reader struct {
 	Db *sql.DB
 }
 
-func (r *Reader) GetById(id int) *models.Product {
-	//make request to db and translate it to models.Product
-	return &models.Product{Id: id}
+func (r *Reader) GetFirst(p *params.PkwTecdocArticleSrc) *scheme.PkwTecdocArticleSrc {
+	repository := &repo.PkwTecdocArticleSrc{Db: r.Db}
+
+	return repository.First(p)
 }

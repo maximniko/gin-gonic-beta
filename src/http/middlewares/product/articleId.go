@@ -3,6 +3,7 @@ package product
 import (
 	"awesomeProject/src/domains/app/models"
 	"awesomeProject/src/domains/product/persistence/db"
+	"awesomeProject/src/domains/product/persistence/db/repositories/params"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -21,7 +22,6 @@ func ArticleIdMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		//TODO Replace to db-request
 		id, err := strconv.Atoi(articleId)
 
 		if err != nil || id < 1 {
@@ -32,7 +32,8 @@ func ArticleIdMiddleware() gin.HandlerFunc {
 
 		reader := db.Reader{Db: c.MustGet(models.Instance).(*models.App).GetDbRead()}
 
-		c.Set(InstanceProduct, reader.GetById(id))
+		p := &params.PkwTecdocArticleSrc{}
+		c.Set(InstanceProduct, reader.GetFirst(p.Append("articleId", id)))
 		// Set example variable
 		c.Next()
 	}

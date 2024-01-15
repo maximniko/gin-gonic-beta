@@ -11,15 +11,11 @@ import (
 
 func MysqlConnectRead() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		username := os.Getenv("MYSQL_USERNAME")
-		password := os.Getenv("MYSQL_PASSWORD")
-		dbName := os.Getenv("MYSQL_DATABASE")
+		dns := dns()
 
-		dataSourceName := fmt.Sprintf("%s:%s@/%s", username, password, dbName)
-
-		fmt.Println(dataSourceName)
+		fmt.Println(dns)
 		// Открываем соединение с базой данных
-		db, err := sql.Open("mysql", dataSourceName)
+		db, err := sql.Open("mysql", dns)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -32,4 +28,12 @@ func MysqlConnectRead() gin.HandlerFunc {
 		c.MustGet(models.Instance).(*models.App).SetDbRead(db)
 		c.Next()
 	}
+}
+
+func dns() string {
+	username := os.Getenv("MYSQL_USERNAME")
+	password := os.Getenv("MYSQL_PASSWORD")
+	hostname := os.Getenv("MYSQL_HOSTNAME")
+
+	return fmt.Sprintf("%s:%s@tcp(%s)/", username, password, hostname)
 }
