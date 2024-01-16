@@ -20,11 +20,6 @@ func MysqlConnectRead() gin.HandlerFunc {
 			panic(err.Error())
 		}
 
-		err = db.Ping()
-		if err != nil {
-			panic(err.Error())
-		}
-
 		c.MustGet(models.Instance).(*models.App).SetDbRead(db)
 		c.Next()
 	}
