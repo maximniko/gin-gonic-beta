@@ -1,18 +1,20 @@
 package repositories
 
 import (
-	"awesomeProject/src/domains/product/persistence/db/repositories/params"
 	"awesomeProject/src/domains/product/persistence/db/scheme"
+	"awesomeProject/src/http/handlers/panics"
+	"awesomeProject/src/interfaces/persistence/repository/db"
 	"database/sql"
 	"github.com/doug-martin/goqu/v9"
 	_ "github.com/doug-martin/goqu/v9/dialect/mysql"
+	"log"
 )
 
 type PkwTecdocArticleSrc struct {
 	Db *sql.DB
 }
 
-func (r *PkwTecdocArticleSrc) First(p *params.PkwTecdocArticleSrc) *scheme.PkwTecdocArticleSrc {
+func (r *PkwTecdocArticleSrc) First(p db.MysqlParams) *scheme.PkwTecdocArticleSrc {
 	var product scheme.PkwTecdocArticleSrc
 
 	found, err := p.Apply(r.selectDataset()).
@@ -20,17 +22,21 @@ func (r *PkwTecdocArticleSrc) First(p *params.PkwTecdocArticleSrc) *scheme.PkwTe
 		ScanStruct(&product)
 
 	if err != nil {
-		panic(err.Error())
+		log.Println(err.Error())
+		p := panics.NewBadRequest()
+		panic(p)
 	}
 
 	if !found {
-		panic("Product not found")
+		log.Println("Product not found")
+		p := panics.NewBadRequest()
+		panic(p)
 	}
 
 	return &product
 }
 
-func (r *PkwTecdocArticleSrc) List(p *params.PkwTecdocArticleSrc) *[]scheme.PkwTecdocArticleSrc {
+func (r *PkwTecdocArticleSrc) List(p db.MysqlParams) *[]scheme.PkwTecdocArticleSrc {
 	var products []scheme.PkwTecdocArticleSrc
 
 	err := p.Apply(r.selectDataset()).ScanStructs(&products)
@@ -43,8 +49,8 @@ func (r *PkwTecdocArticleSrc) List(p *params.PkwTecdocArticleSrc) *[]scheme.PkwT
 }
 
 func (r *PkwTecdocArticleSrc) selectDataset() *goqu.SelectDataset {
-	db := goqu.New("mysql8", r.Db)
+	q := goqu.New("mysql8", r.Db)
 	t := goqu.S("pkwteile_store").Table("pkw_tecdoc_article_src")
 
-	return db.From(t)
+	return q.From(t)
 }
