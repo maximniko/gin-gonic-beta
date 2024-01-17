@@ -6,7 +6,6 @@ import (
 	"awesomeProject/src/interfaces/persistence/repository/db"
 	"database/sql"
 	"github.com/doug-martin/goqu/v9"
-	_ "github.com/doug-martin/goqu/v9/dialect/mysql"
 	"log"
 )
 
@@ -16,11 +15,9 @@ type PkwTecdocArticleSrc struct {
 
 func (r *PkwTecdocArticleSrc) First(p db.MysqlParams) *scheme.PkwTecdocArticleSrc {
 	var product scheme.PkwTecdocArticleSrc
-
 	found, err := p.Apply(r.selectDataset()).
 		Limit(1).
 		ScanStruct(&product)
-
 	if err != nil {
 		log.Println(err.Error())
 		p := panics.NewBadRequest()

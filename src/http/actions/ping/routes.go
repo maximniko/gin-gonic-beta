@@ -5,6 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func RoutesPingV1(g *gin.RouterGroup) {
+func RoutesPingV1(g *gin.Engine) {
 	g.GET("/ping", v1.ActionPing)
 }

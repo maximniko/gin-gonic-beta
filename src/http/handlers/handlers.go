@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
+	"time"
 )
 
 func HandleRuntimePanic(c *gin.Context) {
@@ -20,6 +21,15 @@ func HandleRuntimePanic(c *gin.Context) {
 			log.Println(tmp)
 			c.JSON(1, tmp)
 			c.Abort()
+		default:
+			panic(r)
 		}
 	}
+}
+func PrintTime(startTime time.Time) {
+	endTime := time.Now()
+	elapsed := endTime.Sub(startTime)
+
+	elapsedMilliseconds := elapsed.Milliseconds()
+	fmt.Printf("Прошло времени: %d миллисекунд\n", elapsedMilliseconds)
 }

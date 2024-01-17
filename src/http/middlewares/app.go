@@ -5,9 +5,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func AppendApp() gin.HandlerFunc {
+func AppendApp(app *models.App) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Set(models.Instance, &models.App{})
+		c.Set(models.Instance, app)
 		c.Next()
 	}
 }
