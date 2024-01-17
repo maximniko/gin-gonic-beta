@@ -23,11 +23,3 @@ func (a *App) SetDbRead(db *sql.DB) {
 func (a *App) GetDbRead() *sql.DB {
 	return a.db
 }
-
-func (a *App) SetGoqu(goqu *goqu.Database) {
-	a.goqu = goqu
-}
-
-func (a *App) GetGoqu() *goqu.Database {
-	return a.goqu
-}

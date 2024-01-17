@@ -1,7 +1,7 @@
 package main
 
 import (
-	"awesomeProject/src/domains/app/components"
+	"awesomeProject/src/domains/app/connections"
 	"awesomeProject/src/domains/app/models"
 	"awesomeProject/src/domains/engine"
 	"fmt"
@@ -29,7 +29,6 @@ func loadEnv() {
 
 func makeApp() *models.App {
 	app := models.NewApp()
-	app.SetDbRead(components.NewMysqlConnectRead())
-	app.SetGoqu(components.NewGoqu(app))
+	app.SetDbRead(connections.NewMysqlConnectRead())
 	return app
 }

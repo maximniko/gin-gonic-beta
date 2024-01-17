@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"awesomeProject/src/domains/product/persistence/db/scheme"
+	"awesomeProject/src/http/factories"
 	"awesomeProject/src/http/handlers/panics"
 	"awesomeProject/src/interfaces/persistence/repository/db"
 	"database/sql"
@@ -46,7 +47,7 @@ func (r *PkwTecdocArticleSrc) List(p db.MysqlParams) *[]scheme.PkwTecdocArticleS
 }
 
 func (r *PkwTecdocArticleSrc) selectDataset() *goqu.SelectDataset {
-	q := goqu.New("mysql8", r.Db)
+	q := factories.NewGoqu(r.Db)
 	t := goqu.S("pkwteile_store").Table("pkw_tecdoc_article_src")
 
 	return q.From(t)
